@@ -126,9 +126,6 @@ footer.site{font-family:var(--sans);font-size:.82rem;color:var(--muted);border-t
 .sidenote{position:absolute;left:0;right:0;font-size:.9rem;line-height:1.5;padding:.2rem .4rem;margin:-.2rem -.4rem;border-radius:3px;transition:background .3s}
 .sidenote .sn-n{color:var(--accent);font-size:.72rem;vertical-align:super;margin-right:.15rem}
 .sidenote.hl{background:var(--note-bg)}
-.lang-btn{all:unset;cursor:pointer;font-size:1.05rem;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
-.lang-btn:hover{color:var(--accent)}
-.lang-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .side-toc{position:sticky;top:2rem}
 .side-toc .toc-title{padding-left:calc(.8rem + 2px)}
 .side-toc .toc{font-size:.95rem;gap:.55rem;margin:0}
@@ -158,14 +155,13 @@ footer.site{font-family:var(--sans);font-size:.82rem;color:var(--muted);border-t
   <header class="site">
     <a class="name" href="#inicio">Thiago Oliveira</a>
     <nav aria-label="Principal">
-      <button type="button" class="lang-btn" id="lang-btn" lang="en" aria-label="Read in English">English</button>
       <button type="button" class="theme-toggle" id="theme-toggle" role="switch" aria-checked="false" aria-label="Modo escuro" title="Alternar modo claro e escuro"></button>
     </nav>
   </header>
   <main id="app"></main>
   <footer class="site">
     <span>© 2026 Thiago Oliveira</span>
-    <span id="foot-tag">Escrito devagar, publicado quando fica pronto.</span>
+    <span>Escrito devagar, publicado quando fica pronto.</span>
   </footer>
 </div>
 
@@ -177,66 +173,6 @@ const ESSAYS = [
     subtitle: "Como um fenômeno antigo do Pacífico ganhou outra escala no Brasil",
     date: "Novembro de 2026",
     readMin: 11,
-    en: {
-      title: "El Niño on a Warmer Planet",
-      subtitle: "How an old Pacific phenomenon took on a new scale in Brazil",
-      date: "November 2026",
-      body: `
-<p>Almost every Brazilian has heard of El Niño, usually on the news, when it rains too much in the South or water runs short in the North. It is often treated as a seasonal villain that shows up every few years, upsets the weather and goes away. That description is not wrong, but it is no longer complete. Today's El Niño acts on a planet that is warmer than the one in which it was first studied, and that changes the size of its effects.</p>
-<p>In this essay I want to explain, in simple terms, what the phenomenon is, how it reaches Brazil, and why the combination of El Niño and climate change deserves more attention than either one on its own.</p>
-
-<h2 id="o-que-e">1. What El Niño is</h2>
-<p>El Niño is the abnormal warming of surface waters across the central and eastern Pacific Ocean, near the Equator. The name comes from Peruvian fishermen, who noticed the warmer water around Christmas and associated it with the Christ child.<sup class="fn" data-n="1"></sup></p>
-<p>Under normal conditions, the trade winds blow from east to west across the Pacific and push warm water toward Indonesia and Australia. When those winds weaken, the warm water spreads east, toward South America. That shift changes where the ocean heats the air, where clouds form and, as a result, where rain falls across much of the planet.</p>
-<p>The phenomenon has an opposite phase, La Niña, when the central Pacific is colder than normal. Together, the two phases form what climatologists call ENSO, short for El Niño–Southern Oscillation. An El Niño episode usually lasts from nine months to a year and a half, and it recurs irregularly every two to seven years.</p>
-
-<h2 id="brasil">2. How it reaches Brazil</h2>
-<p>Brazil is far from the Pacific, but it feels El Niño clearly, because the phenomenon changes the circulation of the atmosphere over South America. The general pattern has been known for decades:</p>
-<div class="table-wrap"><table>
-  <thead><tr><th>Region</th><th>Typical effect</th><th>Examples</th></tr></thead>
-  <tbody>
-    <tr><td>South</td><td>More rain, especially in winter and spring, and a higher risk of floods</td><td>The 1983 floods in Santa Catarina; the 2023 and 2024 floods in Rio Grande do Sul</td></tr>
-    <tr><td>North</td><td>Less rain, lower rivers and a higher risk of wildfires</td><td>Amazon droughts in 1997–1998, 2015–2016 and 2023</td></tr>
-    <tr><td>Northeast</td><td>Drought, mainly in the northern part of the region and in the semi-arid interior</td><td>Losses in rain-fed farming and emptier reservoirs</td></tr>
-    <tr><td>Southeast and Center-West</td><td>Higher temperatures; a less clear effect on rainfall</td><td>Heat waves in late 2023</td></tr>
-  </tbody>
-</table></div>
-<p>This pattern is a tendency, not a rule. Each El Niño has a different intensity, duration and shape, and other factors, such as the temperature of the Atlantic, can strengthen or weaken its effects.<sup class="fn" data-n="2"></sup></p>
-<p>In practice, El Niño splits the country. The South gets too much water, and the North and Northeast get too little. For anyone working in water resources, that means planning for floods and droughts at the same time, in different regions and in the same year.</p>
-
-<h2 id="2023-2024">3. 2023 and 2024: an El Niño on a warmer planet</h2>
-<p>The episode that began in mid-2023 showed this combination clearly. It was one of the strongest El Niños on record, but it arrived at a time when the global average temperature was already well above that of previous decades. Together, the two effects pushed 2023, and then 2024, to record temperatures for the planet.</p>
-<p>In Brazil, the signs appeared at both ends. In the Amazon, the 2023 drought lowered rivers to levels rarely seen, cut off communities that depend on river transport and killed river dolphins in Lake Tefé, where the water reached extreme temperatures. In Rio Grande do Sul, a sequence of heavy rains began in September 2023 in the Taquari Valley and culminated in the flood of May 2024, the largest in the state's history.</p>
-<p>Attribution studies carried out soon after these events reached similar conclusions. El Niño contributed, but global warming made the extremes more likely and more intense. In the case of the 2023 Amazon drought, the analysis by the World Weather Attribution network pointed to climate change, not El Niño, as the main driver.<sup class="fn" data-n="3"></sup></p>
-<blockquote>El Niño still sets the rhythm. But the music got louder.</blockquote>
-
-<h2 id="aquecimento">4. What changes with global warming</h2>
-<p>There are two different questions here, and it helps to keep them apart.</p>
-<p>The first is whether global warming changes El Niño itself, making it more frequent or stronger. That answer is not settled. Some studies suggest that extreme episodes may become more common over this century, but climate models still disagree considerably.<sup class="fn" data-n="4"></sup></p>
-<p>The second is whether the effects of the same El Niño get worse on a warmer planet. Here the answer is clearer, and it is yes. A warmer atmosphere holds more moisture, so extreme rainfall in the South tends to be heavier. With higher temperatures, evaporation increases, and droughts in the North and Northeast dry out soil and rivers faster. A moderate El Niño today can produce impacts that used to appear only in strong episodes.</p>
-<p>This has a direct consequence for planning. Past El Niño years, such as 1983 or 1998, are still useful for understanding the pattern, but they underestimate what a similar event could cause now.</p>
-
-<h2 id="avisa-antes">5. A phenomenon that gives warning</h2>
-<p>El Niño has an advantage that other extremes do not: it can be predicted months ahead. Weather centers monitor Pacific temperatures continuously and usually signal the formation of an episode three to six months in advance. Few climate risks give so much time to prepare.</p>
-<p>That time can be used in several ways:</p>
-<ul>
-  <li><strong>Reservoir operation.</strong> Make room to absorb floods in the South, and store water in the North and Northeast before the dry season.</li>
-  <li><strong>Civil defense.</strong> Review contingency plans, risk maps and evacuation routes in cities with a history of flooding.</li>
-  <li><strong>Agriculture.</strong> Adjust planting calendars, crop choices and crop insurance to the forecast for each region.</li>
-  <li><strong>Energy and water supply.</strong> Plan for other energy sources when hydropower reservoirs in the North run low, and strengthen backup supply for cities that depend on rivers that may dry up.</li>
-  <li><strong>Transport in the Amazon.</strong> Send fuel, food and medicine ahead of time to communities that are cut off when rivers drop.</li>
-</ul>
-<p>None of these measures is new. What is usually missing is turning the forecast into a decision in time.<sup class="fn" data-n="5"></sup> In 2023, the formation of El Niño was announced months before the first floods in the South and the drought in the Amazon.</p>
-<p>El Niño will keep coming back, as it always has. The difference is that it now meets a country that is warmer, more urban and more exposed. Knowing this in advance, the worst possible choice is to be caught by surprise.</p>
-`,
-      notes: [
-        "El Niño means “the boy” in Spanish. The first records of the coastal warming off Peru date from the nineteenth century, but the link between the phenomenon and the climate of the whole planet only became clear in the second half of the twentieth century.",
-        "The tropical Atlantic plays an important role, especially in the Northeast and the Amazon. In 2023 the North Atlantic was also exceptionally warm, which helped intensify the drought in the north of the country.",
-        "World Weather Attribution, analysis published in January 2024 on the 2023 Amazon drought. For the 2024 Rio Grande do Sul flood, the same network concluded that climate change made the event more likely and more intense, with El Niño as an additional factor.",
-        "One of the most cited studies is by Cai and colleagues, published in Nature Climate Change in 2014, which projected more frequent extreme El Niños under warming. The topic is still debated in the scientific literature.",
-        "In Brazil, INMET and CPTEC/INPE publish climate outlooks for the coming months, and NOAA, in the United States, publishes a monthly ENSO diagnostic discussion."
-      ]
-    },
     body: `
 <p>Quase todo brasileiro já ouviu falar do El Niño, geralmente no noticiário, quando chove demais no Sul ou falta água no Norte. Ele costuma ser tratado como um vilão sazonal, que aparece a cada poucos anos, bagunça o tempo e vai embora. Essa descrição não está errada, mas ficou incompleta. O El Niño de hoje atua sobre um planeta mais quente do que aquele em que ele foi estudado pela primeira vez, e isso muda o tamanho dos seus efeitos.</p>
 <p>Neste ensaio quero explicar, de forma simples, o que é o fenômeno, como ele chega ao Brasil e por que a combinação entre El Niño e mudança climática merece mais atenção do que cada um separadamente.</p>
@@ -327,60 +263,30 @@ matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncToggle
 const app = document.getElementById("app");
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-const BIO_EN = `
-  <p>Long essays about what I think :)</p>
-  <p>This is my personal space to write slowly. The texts here represent only my own opinion, and some of them will probably age badly.</p>`;
-const I18N = {
-  pt: { essay:"Ensaio", essays:"Ensaios", contents:"Conteúdo", notes:"Notas", min:"min de leitura", top:"Voltar ao topo", next:"Próximo ensaio",
-        tag:"Escrito devagar, publicado quando fica pronto.", btn:"English", btnLang:"en", btnLabel:"Read in English", htmlLang:"pt-BR" },
-  en: { essay:"Essay", essays:"Essays", contents:"Contents", notes:"Notes", min:"min read", top:"Back to top", next:"Next essay",
-        tag:"Written slowly, published when it is ready.", btn:"Português", btnLang:"pt-BR", btnLabel:"Ler em português", htmlLang:"en" }
-};
-let lang = "pt";
-try { if (localStorage.getItem("idioma") === "en") lang = "en"; } catch (_) {}
-const T = () => I18N[lang];
-const L = e => (lang === "en" && e.en) ? { ...e, ...e.en } : e;
-const langBtn = document.getElementById("lang-btn");
-function applyLang(){
-  root.lang = T().htmlLang;
-  langBtn.textContent = T().btn;
-  langBtn.lang = T().btnLang;
-  langBtn.setAttribute("aria-label", T().btnLabel);
-  document.getElementById("foot-tag").textContent = T().tag;
-}
-langBtn.addEventListener("click", () => {
-  lang = lang === "en" ? "pt" : "en";
-  try { localStorage.setItem("idioma", lang); } catch (_) {}
-  const y = scrollY;
-  route();
-  scrollTo(0, y);
-});
-
 function renderHome(){
-  const items = ESSAYS.filter(e => !e.draft).map(e => { const d = L(e); return `<li><a href="#${e.slug}">${esc(d.title)}</a><span class="item-sub">${esc(d.subtitle)}</span><span class="item-date">${d.date}${d.readMin ? ` · ${d.readMin} ${T().min}` : ""}</span></li>`; }).join("");
+  const items = ESSAYS.filter(e => !e.draft).map(e => `<li><a href="#${e.slug}">${esc(e.title)}</a><span class="item-sub">${esc(e.subtitle)}</span><span class="item-date">${e.date}${e.readMin ? ` · ${e.readMin} min de leitura` : ""}</span></li>`).join("");
   app.innerHTML = `
     <div class="home">
-      <div class="bio">${lang === "en" ? BIO_EN : BIO}</div>
-      <h2>${T().essays}</h2>
+      <div class="bio">${BIO}</div>
+      <h2>Ensaios</h2>
       <ul class="essays">${items}</ul>
     </div>`;
 }
 
 function renderEssay(e){
   const tmp = document.createElement("div");
-  const d = L(e);
-  tmp.innerHTML = d.body;
+  tmp.innerHTML = e.body;
   const heads = [...tmp.querySelectorAll("h2[id]")];
   const tocItems = heads.map(h=>`<li data-sec="${h.id}"><a href="#${e.slug}" data-jump="${h.id}">${h.textContent}</a></li>`).join("");
-  const toc = heads.length > 1 ? `<nav class="toc-inline" aria-label="Conteúdo"><p class="toc-title">${T().contents}</p><ol class="toc">${tocItems}</ol></nav>` : "";
-  const sideToc = heads.length > 1 ? `<nav class="side-toc" aria-label="Conteúdo do ensaio"><p class="toc-title">${T().contents}</p><ol class="toc">${tocItems}</ol></nav>` : "";
+  const toc = heads.length > 1 ? `<nav class="toc-inline" aria-label="Conteúdo"><p class="toc-title">Conteúdo</p><ol class="toc">${tocItems}</ol></nav>` : "";
+  const sideToc = heads.length > 1 ? `<nav class="side-toc" aria-label="Conteúdo do ensaio"><p class="toc-title">Conteúdo</p><ol class="toc">${tocItems}</ol></nav>` : "";
   tmp.querySelectorAll("sup.fn").forEach(s => {
     const n = s.dataset.n;
     s.id = "ref-" + n;
     s.innerHTML = `<button type="button" aria-label="Nota ${n}" data-note="${n}">${n}</button>`;
   });
-  const notes = d.notes.length ? `<section class="notes"><h2>${T().notes}</h2><ol>${d.notes.map((n,i)=>`<li id="nota-${i+1}">${n}<a class="back" href="#${e.slug}" data-jump="ref-${i+1}" aria-label="Voltar ao texto">↩</a></li>`).join("")}</ol></section>` : "";
-  const sideNotes = d.notes.map((n,i)=>`<aside class="sidenote" data-side="${i+1}"><span class="sn-n">${i+1}</span>${n}</aside>`).join("");
+  const notes = e.notes.length ? `<section class="notes"><h2>Notas</h2><ol>${e.notes.map((n,i)=>`<li id="nota-${i+1}">${n}<a class="back" href="#${e.slug}" data-jump="ref-${i+1}" aria-label="Voltar ao texto">↩</a></li>`).join("")}</ol></section>` : "";
+  const sideNotes = e.notes.map((n,i)=>`<aside class="sidenote" data-side="${i+1}"><span class="sn-n">${i+1}</span>${n}</aside>`).join("");
   const list = ESSAYS.filter(x => !x.draft);
   const next = list[list.indexOf(e) + 1];
   app.innerHTML = `
@@ -388,17 +294,17 @@ function renderEssay(e){
       <div class="side-left">${sideToc}</div>
       <div class="col">
         <div class="essay-head">
-          <div class="kicker">${T().essay}</div>
-          <h1>${esc(d.title)}</h1>
-          <p class="subtitle">${esc(d.subtitle)}</p>
-          <div class="meta">${d.date}${d.readMin ? ` · ${d.readMin} ${T().min}` : ""}</div>
+          <div class="kicker">Ensaio</div>
+          <h1>${esc(e.title)}</h1>
+          <p class="subtitle">${esc(e.subtitle)}</p>
+          <div class="meta">${e.date}${e.readMin ? ` · ${e.readMin} min de leitura` : ""}</div>
         </div>
         ${toc}
         <article>${tmp.innerHTML}</article>
         ${notes}
         <div class="essay-end">
-          ${next ? `<p class="next">${T().next}: <a href="#${next.slug}">${esc(L(next).title)}</a></p>` : ""}
-          <p class="to-top"><a href="#${e.slug}" data-top>${T().top}</a></p>
+          ${next ? `<p class="next">Próximo ensaio: <a href="#${next.slug}">${esc(next.title)}</a></p>` : ""}
+          <p class="to-top"><a href="#${e.slug}" data-top>Voltar ao topo</a></p>
         </div>
       </div>
       <div class="side-right"></div>
@@ -454,7 +360,7 @@ document.addEventListener("click", ev => {
     const e = ESSAYS.find(x => x.slug === app.dataset.slug);
     pop = document.createElement("div");
     pop.className = "pop"; pop.dataset.for = btn.dataset.note; pop.setAttribute("role","note");
-    pop.innerHTML = `<strong>${btn.dataset.note}.</strong> ${L(e).notes[btn.dataset.note-1]}`;
+    pop.innerHTML = `<strong>${btn.dataset.note}.</strong> ${e.notes[btn.dataset.note-1]}`;
     document.body.appendChild(pop);
     const r = btn.getBoundingClientRect(), w = pop.offsetWidth;
     const left = Math.min(Math.max(16, r.left + window.scrollX - w/2), document.documentElement.clientWidth - w - 16);
@@ -468,14 +374,13 @@ document.addEventListener("keydown", ev => { if (ev.key === "Escape") closePop()
 
 function route(){
   closePop();
-  applyLang();
   const h = location.hash.slice(1) || "inicio";
   const e = ESSAYS.find(x => x.slug === h);
   if (e){ renderEssay(e); }
   else { renderHome(); delete app.dataset.slug; }
   document.querySelectorAll("[data-nav]").forEach(a => a.toggleAttribute("aria-current", a.dataset.nav === (h==="sobre"?"sobre":"inicio")) || a.removeAttribute("aria-current"));
   document.querySelectorAll("[data-nav]").forEach(a => { if (a.dataset.nav === (h==="sobre"?"sobre":"inicio")) a.setAttribute("aria-current","page"); });
-  document.title = e ? `${L(e).title} · Thiago Oliveira` : "Thiago Oliveira";
+  document.title = e ? `${e.title} · Thiago Oliveira` : "Thiago Oliveira";
   window.scrollTo(0,0);
   progress();
 }
