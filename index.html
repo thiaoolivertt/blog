@@ -140,10 +140,10 @@ footer.site{font-family:var(--sans);font-size:.82rem;color:var(--muted);border-t
 @media (min-width:1280px){
   .essay-grid{display:grid;grid-template-columns:minmax(0,1fr) var(--measure) minmax(0,1fr);column-gap:3.5rem;
     width:min(1320px,calc(100vw - 64px));margin-left:calc(var(--measure) / 2 - min(660px, 50vw - 32px))}
-  .side-left,.side-right{display:block}
+  .side-left{display:block}
   .side-left{justify-self:end;width:100%;max-width:15rem;padding-top:.4rem}
   .side-right{position:relative;max-width:17rem}
-  .toc-inline,.essay-grid .notes{display:none}
+  .toc-inline{display:none}
 }
 </style>
 </head>
@@ -306,7 +306,7 @@ function renderEssay(e){
           <p class="to-top"><a href="#${e.slug}" data-top>Voltar ao topo</a></p>
         </div>
       </div>
-      <div class="side-right">${sideNotes}</div>
+      <div class="side-right"></div>
     </div>`;
   app.dataset.slug = e.slug;
   requestAnimationFrame(() => { layoutSide(); activeSection(); });
@@ -352,11 +352,6 @@ document.addEventListener("click", ev => {
     return;
   }
   const btn = ev.target.closest("[data-note]");
-  if (btn && wideMQ.matches){
-    const side = app.querySelector(`.sidenote[data-side="${btn.dataset.note}"]`);
-    if (side){ side.classList.add("hl"); setTimeout(() => side.classList.remove("hl"), 1600); }
-    return;
-  }
   if (btn){
     const open = pop && pop.dataset.for === btn.dataset.note;
     closePop();
