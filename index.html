@@ -32,7 +32,7 @@ a:hover{text-decoration-color:var(--accent)}
 a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
 .wrap{max-width:var(--measure);margin:0 auto}
 
-#progress{position:fixed;top:0;left:0;height:2px;background:var(--accent);width:0;z-index:20;margin-top:env(safe-area-inset-top,0px)}
+#progress{position:fixed;top:0;left:0;height:2px;background:var(--accent);width:0;z-index:30;margin-top:env(safe-area-inset-top,0px)}
 
 header.site{display:flex;justify-content:space-between;align-items:center;gap:1rem;
   padding-block:2rem 0;font-family:var(--sans);font-size:.88rem}
@@ -146,6 +146,27 @@ footer.site{font-family:var(--sans);font-size:.82rem;color:var(--muted);border-t
   .side-right{position:relative;max-width:17rem}
   .toc-inline{display:none}
 }
+
+[hidden]{display:none!important}
+/* Celular e tablet: cabeçalho fixo no ensaio com botão de conteúdo */
+.menu-btn{all:unset;cursor:pointer;box-sizing:border-box;display:inline-flex;flex-direction:column;justify-content:center;gap:5px;width:30px;height:30px;padding:3px}
+.menu-btn span{display:block;height:2px;background:var(--fg);border-radius:1px}
+.menu-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+header.site{position:relative}
+.menu-panel{position:absolute;left:0;right:0;top:100%;background:var(--bg);border-bottom:1px solid var(--rule);padding:1.1rem 0 1.4rem;
+  box-shadow:0 0 0 100vmax var(--bg);clip-path:inset(0 -100vmax -1px)}
+.menu-panel .toc-title{padding-left:calc(.8rem + 2px)}
+.menu-panel .toc{font-size:1.05rem;gap:.75rem;margin:0}
+.menu-panel li{padding-left:.8rem;border-left:2px solid transparent;line-height:1.35}
+.menu-panel li.on{border-left-color:var(--fg)}
+@media (max-width:1279.98px){
+  body.essay-page::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:26;background:var(--bg)}
+  body.essay-page header.site{position:sticky;top:env(safe-area-inset-top,0px);z-index:25;padding-block:1rem}
+  body.essay-page header.site::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 50vw);right:calc(50% - 50vw);background:var(--bg);z-index:-1}
+  body.essay-page header.site.stuck::before{border-bottom:1px solid var(--rule)}
+  body.essay-page header.site .name{font-size:1.6rem}
+}
+@media (min-width:1280px){ .menu-btn,.menu-panel{display:none!important} }
 </style>
 </head>
 <body>
@@ -155,8 +176,10 @@ footer.site{font-family:var(--sans);font-size:.82rem;color:var(--muted);border-t
   <header class="site">
     <a class="name" href="#inicio">Thiago Oliveira</a>
     <nav aria-label="Principal">
+      <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu-panel" aria-label="Conteúdo do ensaio" hidden><span></span><span></span><span></span></button>
       <button type="button" class="theme-toggle" id="theme-toggle" role="switch" aria-checked="false" aria-label="Modo escuro" title="Alternar modo claro e escuro"></button>
     </nav>
+    <div class="menu-panel" id="menu-panel" hidden></div>
   </header>
   <main id="app"></main>
   <footer class="site">
@@ -263,7 +286,21 @@ matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncToggle
 const app = document.getElementById("app");
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
+const menuBtn = document.getElementById("menu-btn");
+const menuPanel = document.getElementById("menu-panel");
+const headerEl = document.querySelector("header.site");
+function closeMenu(){ menuPanel.hidden = true; menuBtn.setAttribute("aria-expanded", "false"); }
+menuBtn.addEventListener("click", ev => {
+  ev.stopPropagation();
+  const open = menuPanel.hidden;
+  menuPanel.hidden = !open;
+  menuBtn.setAttribute("aria-expanded", String(open));
+  if (open) activeSection();
+});
+addEventListener("scroll", () => headerEl.classList.toggle("stuck", scrollY > 8), {passive:true});
+
 function renderHome(){
+  menuBtn.hidden = true; closeMenu(); menuPanel.innerHTML = "";
   const items = ESSAYS.filter(e => !e.draft).map(e => `<li><a href="#${e.slug}">${esc(e.title)}</a><span class="item-sub">${esc(e.subtitle)}</span><span class="item-date">${e.date}${e.readMin ? ` · ${e.readMin} min de leitura` : ""}</span></li>`).join("");
   app.innerHTML = `
     <div class="home">
@@ -280,6 +317,8 @@ function renderEssay(e){
   const tocItems = heads.map(h=>`<li data-sec="${h.id}"><a href="#${e.slug}" data-jump="${h.id}">${h.textContent}</a></li>`).join("");
   const toc = heads.length > 1 ? `<nav class="toc-inline" aria-label="Conteúdo"><p class="toc-title">Conteúdo</p><ol class="toc">${tocItems}</ol></nav>` : "";
   const sideToc = heads.length > 1 ? `<nav class="side-toc" aria-label="Conteúdo do ensaio"><p class="toc-title">Conteúdo</p><ol class="toc">${tocItems}</ol></nav>` : "";
+  menuPanel.innerHTML = heads.length > 1 ? `<p class="toc-title">Conteúdo</p><ol class="toc">${tocItems}</ol>` : "";
+  menuBtn.hidden = heads.length <= 1; closeMenu();
   tmp.querySelectorAll("sup.fn").forEach(s => {
     const n = s.dataset.n;
     s.id = "ref-" + n;
@@ -328,7 +367,7 @@ function layoutSide(){
   });
 }
 function activeSection(){
-  const items = app.querySelectorAll(".side-toc li[data-sec]");
+  const items = document.querySelectorAll(".side-toc li[data-sec], .menu-panel li[data-sec]");
   if (!items.length) return;
   let cur = null;
   app.querySelectorAll("article h2[id]").forEach(h => { if (h.getBoundingClientRect().top < innerHeight * 0.35) cur = h.id; });
@@ -342,9 +381,10 @@ addEventListener("scroll", activeSection, {passive:true});
 let pop = null;
 function closePop(){ if(pop){ pop.remove(); pop = null; } }
 document.addEventListener("click", ev => {
+  if (!menuPanel.hidden && !ev.target.closest("#menu-panel")) closeMenu();
   if (ev.target.closest("[data-top]")){ ev.preventDefault(); closePop(); window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); return; }
   const jump = ev.target.closest("[data-jump]");
-  if (jump){ ev.preventDefault(); closePop(); document.getElementById(jump.dataset.jump)?.scrollIntoView({behavior:"smooth",block:"center"}); return; }
+  if (jump){ ev.preventDefault(); closePop(); closeMenu(); document.getElementById(jump.dataset.jump)?.scrollIntoView({behavior:"smooth",block:"center"}); return; }
   const copy = ev.target.closest("[data-copy]");
   if (copy){
     const done = t => { copy.textContent = t; setTimeout(() => { copy.textContent = "Copiar link do ensaio"; }, 2200); };
@@ -370,12 +410,13 @@ document.addEventListener("click", ev => {
   }
   if (pop && !ev.target.closest(".pop")) closePop();
 });
-document.addEventListener("keydown", ev => { if (ev.key === "Escape") closePop(); });
+document.addEventListener("keydown", ev => { if (ev.key === "Escape"){ closePop(); closeMenu(); } });
 
 function route(){
   closePop();
   const h = location.hash.slice(1) || "inicio";
   const e = ESSAYS.find(x => x.slug === h);
+  document.body.classList.toggle("essay-page", !!e);
   if (e){ renderEssay(e); }
   else { renderHome(); delete app.dataset.slug; }
   document.querySelectorAll("[data-nav]").forEach(a => a.toggleAttribute("aria-current", a.dataset.nav === (h==="sobre"?"sobre":"inicio")) || a.removeAttribute("aria-current"));
