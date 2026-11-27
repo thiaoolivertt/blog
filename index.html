@@ -302,7 +302,6 @@ function renderEssay(e){
         <article>${tmp.innerHTML}</article>
         ${notes}
         <div class="essay-end">
-          <button type="button" class="copy-link" data-copy>Copiar link do ensaio</button>
           ${next ? `<p class="next">Próximo ensaio: <a href="#${next.slug}">${esc(next.title)}</a></p>` : ""}
           <p class="to-top"><a href="#${e.slug}" data-top>Voltar ao topo</a></p>
         </div>
