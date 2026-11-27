@@ -150,7 +150,11 @@ footer.site{font-family:var(--sans);font-size:.82rem;color:var(--muted);border-t
 [hidden]{display:none!important}
 /* Celular e tablet: cabeçalho fixo no ensaio com botão de conteúdo */
 .menu-btn{all:unset;cursor:pointer;box-sizing:border-box;display:inline-flex;flex-direction:column;justify-content:center;gap:5px;width:30px;height:30px;padding:3px}
-.menu-btn span{display:block;height:2px;background:var(--fg);border-radius:1px}
+.menu-btn span{display:block;height:2px;background:var(--fg);border-radius:1px;transition:transform .25s ease,opacity .2s ease}
+.menu-btn[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.menu-btn[aria-expanded="true"] span:nth-child(2){opacity:0}
+.menu-btn[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media (prefers-reduced-motion:reduce){.menu-btn span{transition:none}}
 .menu-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 header.site{position:relative}
 .menu-panel{position:absolute;left:0;right:0;top:100%;background:var(--bg);border-bottom:1px solid var(--rule);padding:1.1rem 0 1.4rem;
