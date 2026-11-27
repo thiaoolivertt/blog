@@ -117,6 +117,34 @@ footer.site{font-family:var(--sans);font-size:.82rem;color:var(--muted);border-t
   .list .d{padding-top:0}
 }
 @media (prefers-reduced-motion:no-preference){ #app{animation:fade .35s ease both} @keyframes fade{from{opacity:.4}to{opacity:1}} }
+
+/* Desktop: três colunas no desktop (sumário fixo · texto · notas na margem) */
+.side-left,.side-right{display:none}
+.essays li{margin-bottom:1.6rem}
+.essays .item-sub{display:block;font-style:italic;font-size:1.05rem;line-height:1.45;margin-top:.25rem}
+.essays .item-date{display:block;font-size:.95rem;margin-top:.2rem;font-variant-numeric:tabular-nums}
+.sidenote{position:absolute;left:0;right:0;font-size:.9rem;line-height:1.5;padding:.2rem .4rem;margin:-.2rem -.4rem;border-radius:3px;transition:background .3s}
+.sidenote .sn-n{color:var(--accent);font-size:.72rem;vertical-align:super;margin-right:.15rem}
+.sidenote.hl{background:var(--note-bg)}
+.side-toc{position:sticky;top:2rem}
+.side-toc .toc{font-size:.95rem;gap:.55rem;margin:0}
+.side-toc li{padding-left:.8rem;border-left:2px solid transparent;line-height:1.35}
+.side-toc li.on{border-left-color:var(--fg)}
+.essay-end{margin-top:3.5rem;display:grid;gap:1.3rem;justify-items:center;text-align:center}
+.essay-end .to-top{margin:0}
+.copy-link{all:unset;cursor:pointer;font-size:1.02rem;border:1px solid var(--fg);border-radius:999px;padding:.45rem 1.15rem;transition:background .2s,color .2s}
+.copy-link:hover{background:var(--fg);color:var(--bg)}
+.copy-link:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.next{margin:0;font-size:1.1rem}
+.next a{text-decoration-color:currentColor}
+@media (min-width:1280px){
+  .essay-grid{display:grid;grid-template-columns:minmax(0,1fr) var(--measure) minmax(0,1fr);column-gap:3.5rem;
+    width:min(1320px,calc(100vw - 64px));margin-left:calc(var(--measure) / 2 - min(660px, 50vw - 32px))}
+  .side-left,.side-right{display:block}
+  .side-left{justify-self:end;width:100%;max-width:15rem;padding-top:.4rem}
+  .side-right{position:relative;max-width:17rem}
+  .toc-inline,.essay-grid .notes{display:none}
+}
 </style>
 </head>
 <body>
@@ -235,7 +263,7 @@ const app = document.getElementById("app");
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 function renderHome(){
-  const items = ESSAYS.filter(e => !e.draft).map(e => `<li><a href="#${e.slug}">${esc(e.title)}</a></li>`).join("");
+  const items = ESSAYS.filter(e => !e.draft).map(e => `<li><a href="#${e.slug}">${esc(e.title)}</a><span class="item-sub">${esc(e.subtitle)}</span><span class="item-date">${e.date}${e.readMin ? ` · ${e.readMin} min de leitura` : ""}</span></li>`).join("");
   app.innerHTML = `
     <div class="home">
       <div class="bio">${BIO}</div>
@@ -248,26 +276,68 @@ function renderEssay(e){
   const tmp = document.createElement("div");
   tmp.innerHTML = e.body;
   const heads = [...tmp.querySelectorAll("h2[id]")];
-  const toc = heads.length > 1 ? `<p class="toc-title">Conteúdo</p><ol class="toc">${heads.map(h=>`<li><a href="#${e.slug}" data-jump="${h.id}">${h.textContent}</a></li>`).join("")}</ol>` : "";
+  const tocItems = heads.map(h=>`<li data-sec="${h.id}"><a href="#${e.slug}" data-jump="${h.id}">${h.textContent}</a></li>`).join("");
+  const toc = heads.length > 1 ? `<nav class="toc-inline" aria-label="Conteúdo"><p class="toc-title">Conteúdo</p><ol class="toc">${tocItems}</ol></nav>` : "";
+  const sideToc = heads.length > 1 ? `<nav class="side-toc" aria-label="Conteúdo do ensaio"><p class="toc-title">Conteúdo</p><ol class="toc">${tocItems}</ol></nav>` : "";
   tmp.querySelectorAll("sup.fn").forEach(s => {
     const n = s.dataset.n;
     s.id = "ref-" + n;
     s.innerHTML = `<button type="button" aria-label="Nota ${n}" data-note="${n}">${n}</button>`;
   });
   const notes = e.notes.length ? `<section class="notes"><h2>Notas</h2><ol>${e.notes.map((n,i)=>`<li id="nota-${i+1}">${n}<a class="back" href="#${e.slug}" data-jump="ref-${i+1}" aria-label="Voltar ao texto">↩</a></li>`).join("")}</ol></section>` : "";
+  const sideNotes = e.notes.map((n,i)=>`<aside class="sidenote" data-side="${i+1}"><span class="sn-n">${i+1}</span>${n}</aside>`).join("");
+  const list = ESSAYS.filter(x => !x.draft);
+  const next = list[list.indexOf(e) + 1];
   app.innerHTML = `
-    <div class="essay-head">
-      <div class="kicker">Ensaio</div>
-      <h1>${esc(e.title)}</h1>
-      <p class="subtitle">${esc(e.subtitle)}</p>
-      <div class="meta">${e.date}${e.readMin ? ` · ${e.readMin} min de leitura` : ""}</div>
-    </div>
-    ${toc}
-    <article>${tmp.innerHTML}</article>
-    ${notes}
-    <p class="to-top"><a href="#${e.slug}" data-top>Voltar ao topo</a></p>`;
+    <div class="essay-grid">
+      <div class="side-left">${sideToc}</div>
+      <div class="col">
+        <div class="essay-head">
+          <div class="kicker">Ensaio</div>
+          <h1>${esc(e.title)}</h1>
+          <p class="subtitle">${esc(e.subtitle)}</p>
+          <div class="meta">${e.date}${e.readMin ? ` · ${e.readMin} min de leitura` : ""}</div>
+        </div>
+        ${toc}
+        <article>${tmp.innerHTML}</article>
+        ${notes}
+        <div class="essay-end">
+          <button type="button" class="copy-link" data-copy>Copiar link do ensaio</button>
+          ${next ? `<p class="next">Próximo ensaio: <a href="#${next.slug}">${esc(next.title)}</a></p>` : ""}
+          <p class="to-top"><a href="#${e.slug}" data-top>Voltar ao topo</a></p>
+        </div>
+      </div>
+      <div class="side-right">${sideNotes}</div>
+    </div>`;
   app.dataset.slug = e.slug;
+  requestAnimationFrame(() => { layoutSide(); activeSection(); });
 }
+
+const wideMQ = matchMedia("(min-width: 1280px)");
+function layoutSide(){
+  const right = app.querySelector(".side-right");
+  if (!right || !wideMQ.matches) return;
+  const base = right.getBoundingClientRect().top;
+  let floor = 0;
+  right.querySelectorAll(".sidenote").forEach(n => {
+    const ref = document.getElementById("ref-" + n.dataset.side);
+    if (!ref) return;
+    const top = Math.max(ref.getBoundingClientRect().top - base - 4, floor);
+    n.style.top = top + "px";
+    floor = top + n.offsetHeight + 18;
+  });
+}
+function activeSection(){
+  const items = app.querySelectorAll(".side-toc li[data-sec]");
+  if (!items.length) return;
+  let cur = null;
+  app.querySelectorAll("article h2[id]").forEach(h => { if (h.getBoundingClientRect().top < innerHeight * 0.35) cur = h.id; });
+  items.forEach(li => li.classList.toggle("on", li.dataset.sec === cur));
+}
+addEventListener("resize", layoutSide);
+wideMQ.addEventListener("change", layoutSide);
+document.fonts?.ready.then(layoutSide);
+addEventListener("scroll", activeSection, {passive:true});
 
 let pop = null;
 function closePop(){ if(pop){ pop.remove(); pop = null; } }
@@ -275,7 +345,19 @@ document.addEventListener("click", ev => {
   if (ev.target.closest("[data-top]")){ ev.preventDefault(); closePop(); window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); return; }
   const jump = ev.target.closest("[data-jump]");
   if (jump){ ev.preventDefault(); closePop(); document.getElementById(jump.dataset.jump)?.scrollIntoView({behavior:"smooth",block:"center"}); return; }
+  const copy = ev.target.closest("[data-copy]");
+  if (copy){
+    const done = t => { copy.textContent = t; setTimeout(() => { copy.textContent = "Copiar link do ensaio"; }, 2200); };
+    try { navigator.clipboard.writeText(location.href).then(() => done("Link copiado"), () => done(location.href)); }
+    catch (_) { done(location.href); }
+    return;
+  }
   const btn = ev.target.closest("[data-note]");
+  if (btn && wideMQ.matches){
+    const side = app.querySelector(`.sidenote[data-side="${btn.dataset.note}"]`);
+    if (side){ side.classList.add("hl"); setTimeout(() => side.classList.remove("hl"), 1600); }
+    return;
+  }
   if (btn){
     const open = pop && pop.dataset.for === btn.dataset.note;
     closePop();
